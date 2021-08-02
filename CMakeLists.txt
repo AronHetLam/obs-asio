@@ -66,7 +66,7 @@ include_directories(
 )
 
 set(obs-asio_QRC
-	asio-input.qrc)
+	src/asio-input.qrc)
 	
 set(obs-asio_SOURCES
 	src/asio-input.cpp
@@ -74,11 +74,11 @@ set(obs-asio_SOURCES
 
 set(JUCE_LIB optimized ${JUCE_LIBRARY} debug ${JUCE_LIBRARY_DEBUG})
 
-qt5_add_resources(obs-asio_QRC_SOURCES ${win-asio_QRC})
+qt5_add_resources(obs-asio_QRC_SOURCES ${obs-asio_QRC})
 
 add_library(obs-asio MODULE
-	${win-asio_SOURCES}
-	${win-asio_QRC_SOURCES}
+	${obs-asio_SOURCES}
+	${obs-asio_QRC_SOURCES}
 )
 
 target_link_libraries(obs-asio
@@ -89,8 +89,11 @@ target_link_libraries(obs-asio
 	Qt5::Widgets
 )
 
-#install_obs_plugin_with_data(obs-asio data) ==> internal plugin install
-#install_external_plugin_with_data(obs-asio data)
+# Internal plugin install
+#install_obs_plugin_with_data(obs-asio src/data)
+
+# External plugin install
+#install_external_plugin_with_data(obs-asio src/data)
 
 set(RELEASE_DIR "${PROJECT_SOURCE_DIR}/release")
 add_custom_command(TARGET obs-asio POST_BUILD
