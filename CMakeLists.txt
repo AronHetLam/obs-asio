@@ -65,23 +65,23 @@ include_directories(
 	${Qt5Widgets_INCLUDES}
 )
 
-set(obs-asio_QRC
-	asio-input.qrc)
+set(win-asio_QRC
+	src/asio-input.qrc)
 	
-set(obs-asio_SOURCES
+set(win-asio_SOURCES
 	src/asio-input.cpp
 )
 
 set(JUCE_LIB optimized ${JUCE_LIBRARY} debug ${JUCE_LIBRARY_DEBUG})
 
-qt5_add_resources(obs-asio_QRC_SOURCES ${win-asio_QRC})
+qt5_add_resources(win-asio_QRC_SOURCES ${win-asio_QRC})
 
-add_library(obs-asio MODULE
+add_library(win-asio MODULE
 	${win-asio_SOURCES}
 	${win-asio_QRC_SOURCES}
 )
 
-target_link_libraries(obs-asio
+target_link_libraries(win-asio
 	libobs
 	obs-frontend-api
 	${JUCE_LIB}
@@ -89,23 +89,26 @@ target_link_libraries(obs-asio
 	Qt5::Widgets
 )
 
-#install_obs_plugin_with_data(obs-asio data) ==> internal plugin install
-#install_external_plugin_with_data(obs-asio data)
+# Internal plugin install
+#install_obs_plugin_with_data(win-asio src/data)
+
+# External plugin install
+#install_external_plugin_with_data(win-asio src/data)
 
 set(RELEASE_DIR "${PROJECT_SOURCE_DIR}/release")
-add_custom_command(TARGET obs-asio POST_BUILD
+add_custom_command(TARGET win-asio POST_BUILD
 	COMMAND if $<CONFIG:Release>==1 (
 		"${CMAKE_COMMAND}" -E make_directory
-			"${RELEASE_DIR}/data/obs-plugins/obs-asio"
+			"${RELEASE_DIR}/data/obs-plugins/win-asio"
 			"${RELEASE_DIR}/obs-plugins/${OBS_ARCH_NAME}")
 
 	COMMAND if $<CONFIG:Release>==1 (
 		"${CMAKE_COMMAND}" -E copy_directory
 			"${PROJECT_SOURCE_DIR}/src/data"
-			"${RELEASE_DIR}/data/obs-plugins/obs-asio")
+			"${RELEASE_DIR}/data/obs-plugins/win-asio")
 
 	COMMAND if $<CONFIG:Release>==1 (
 		"${CMAKE_COMMAND}" -E copy
-			"$<TARGET_FILE:obs-asio>"
+			"$<TARGET_FILE:win-asio>"
 			"${RELEASE_DIR}/obs-plugins/${OBS_ARCH_NAME}")
 )			
